@@ -4,7 +4,9 @@
 
 int main() {
   FiniteStateMachine machine;
-  machine.EnterMachine();
+  std::string input_file;
+  std::cin >> input_file;
+  machine.EnterMachine(input_file);
   std::cout << "You've entered the following machine:\n";
   machine.PrintMachine();
   machine.GetRidOfEpsTransitions();

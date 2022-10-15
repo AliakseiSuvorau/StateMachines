@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 
 struct arrow {
   char letter = '-';
@@ -32,38 +33,32 @@ class FiniteStateMachine {
 
   ~FiniteStateMachine() = default;
 
-  void EnterMachine() {
-    std::cout << "Enter the number of states: ";
-    std::cin >> num_of_states;
+  void EnterMachine(std::string& input) {
+    std::ifstream fin(input);
+    fin >> num_of_states;
     states.resize(num_of_states);
-    std::cout << "Enter number of transitions: ";
     int num_of_transitions;
-    std::cin >> num_of_transitions;
-    std::cout << "Enter transitions in order: (from_state) (letter) (to_state)\n"; //- for epsilon
+    fin >> num_of_transitions;
     for (int i = 0; i < num_of_transitions; ++i) {
       int from, to;
       char letter;
-      std::cin >> from >> letter >> to;
+      fin >> from >> letter >> to;
       states[from - 1].from_cur.push_back({letter, to - 1});
       states[to - 1].to_cur.push_back({letter, from - 1});
-      if (alphabet.find(letter) == std::string::npos) {
-        alphabet += letter;
-      }
     }
-    std::cout << "Enter the index of the beginning state: ";
     int index_of_beginning;
-    std::cin >> index_of_beginning;
+    fin >> index_of_beginning;
     index_of_beginning_state = index_of_beginning - 1;
     states[index_of_beginning - 1].is_beginning = true;
-    std::cout << "Enter the number of accepting states: ";
     int num_of_accept;
-    std::cin >> num_of_accept;
-    std::cout << "Enter all the accepting states:\n";
+    fin >> num_of_accept;
     for (int i = 0; i < num_of_accept; ++i) {
       int index_of_accept;
-      std::cin >> index_of_accept;
+      fin >> index_of_accept;
       states[index_of_accept - 1].is_accept = true;
     }
+    fin >> alphabet;
+    fin.close();
   }
 
   void PrintMachine() {

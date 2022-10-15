@@ -49,6 +49,9 @@ class DeterminedFiniteStateMachine {
     state state;
     state.is_accept = is_accept;
     state.is_beginning = is_beginning;
+    if (state.is_beginning) {
+      index_of_beginning_state = states_dfsm.size();
+    }
     state.set_of_states = set;
     state.index_of_state = states_dfsm.size();
     states_dfsm.push_back(state);
@@ -158,7 +161,6 @@ class DeterminedFiniteStateMachine {
  public:
   void EnterNSM(FiniteStateMachine& FSM) {
     alphabet = FSM.alphabet;
-    index_of_beginning_state = FSM.index_of_beginning_state;
     for (int i = 0; i < FSM.num_of_states; ++i) {
       std::set<int> set = {i};
       AddStateToFSM(set, FSM.IsBegining(i), FSM.IsAccept(i));
@@ -265,7 +267,7 @@ class DeterminedFiniteStateMachine {
     }
   }
 
-  bool Readable(std::string& word) {
+  bool Readable(const std::string& word) {
     int index = index_of_beginning_state;
     for (int i = 0; i < word.size(); ++i) {
       for (int j = 0; j < states_dfsm[index].from_cur.size(); ++j) {
@@ -276,5 +278,9 @@ class DeterminedFiniteStateMachine {
       }
     }
     return states_dfsm[index].is_accept;
+  }
+
+  int size() {
+    return states_dfsm.size();
   }
 };
