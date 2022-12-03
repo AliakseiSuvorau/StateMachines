@@ -1,6 +1,7 @@
 Как запускать проект?
 ```
 git clone https://github.com/AliakseiSuvorau/StateMachines
+git checkout dev
 cd StateMachines
 mkdir build
 cd build
